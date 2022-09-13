@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="images/tic.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+     <!-- css for specific elements -->
+     <link rel="stylesheet" href="style.css">
+    <title>Tic Tac Toe</title>
+</head>
+<body>
+    <div class="start">
+        <h1>TIC TAC TOE</h1>
+        <div class="playersButtons">
+            <button id="playerOne" >1 Player</button>
+            <button id="playerTwo">2 Players</button>
+        </div>
+    </div>
+    <div class="game">
+        <header>
+            <h1>TIC TAC TOE</h1>
+        </header>
+        <main class="board">
+            <button data-id="0" class="boardButton no-left no-top"></button>
+            <button data-id="1" class="boardButton no-top"></button>
+            <button data-id="2" class="boardButton no-top no-right"></button>
+
+            <button data-id="3" class="boardButton no-left"></button>
+            <button data-id="4" class="boardButton"></button>
+            <button data-id="5" class="boardButton no-right"></button>
+
+            <button data-id="6" class="boardButton no-left no-bottom"></button>
+            <button data-id="7" class="boardButton no-bottom"></button>
+            <button data-id="8" class="boardButton no-bottom no-right"></button>
+        </main>
+        <aside>
+            <div class="results">
+                <div class="playerResults  ">
+                    <div><img src="images/x.png"/></div>
+                    <span>Player 1</span>
+                    <div class="roundResult">
+                        <img src ="images/medal.png" />
+                        <img src ="images/medal.png" />
+                        <img src ="images/medal.png" />
+                    </div>
+                </div>
+                <div class="playerResults  ">
+                    <div><img src="images/0.png"/></div>
+                    <span>Player 2</span>
+                    <div class="roundResult">
+                        <div class="roundResult">
+                            <img src ="images/medal.png" />
+                            <img src ="images/medal.png" />
+                            <img src ="images/medal.png" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="buttonsResults"></div>
+        </aside>
+    </div>
+
+
+     <!-- Modal for selecting players-->
+    <div id="playersModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close" id="closeModal">&times;</span>
+          <h2 style="padding-left:20px">SETTINGS</h2>
+          <div class="contentPlayer" >            
+            <div class="fields">
+                <label>Player's Name</label>           
+                <input type="text" />
+            </div>
+            <div class="fields" id="contentPlayer1">
+                <label>Difficulty</label>           
+                 <select >
+                    <option value="normal">Normal</option>
+                    <option value="hard">Unbeatable</option>
+                 </select>
+            </div>
+            <div class="fields" id="contentPlayer2">
+                <label>Player's Two Name</label>           
+                <input type="text" />
+            </div>
+            <button class="save">Save</button>
+          </div>              
+        </div>         
+    </div> 
+     <!--end modals -->
+<script type="text/javascript" src="functions.js"></script>
+</body>   
+</html>
