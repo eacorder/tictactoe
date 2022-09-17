@@ -12,55 +12,55 @@
      <link rel="stylesheet" href="style.css">
     <title>Tic Tac Toe</title>
 </head>
-<body>
-    <div class="start">
+<body class="container">
+    <div   class="start" >
         <h1>TIC TAC TOE</h1>
         <div class="playersButtons">
             <button id="playerOne" >1 Player</button>
             <button id="playerTwo">2 Players</button>
         </div>
     </div>
-    <div class="game">
+    <div  class="game">
         <header>
             <h1>TIC TAC TOE</h1>
         </header>
         <main class="board">
-            <button data-id="0" class="boardButton no-left no-top"></button>
-            <button data-id="1" class="boardButton no-top"></button>
-            <button data-id="2" class="boardButton no-top no-right"></button>
+            <button data-x="0" data-y="0"  class="boardButton no-left no-top"></button>
+            <button data-x="0" data-y="1" class="boardButton no-top"></button>
+            <button data-x="0" data-y="2" class="boardButton no-top no-right"></button>
 
-            <button data-id="3" class="boardButton no-left"></button>
-            <button data-id="4" class="boardButton"></button>
-            <button data-id="5" class="boardButton no-right"></button>
+            <button data-x="1" data-y="0" class="boardButton no-left"></button>
+            <button data-x="1" data-y="1"  class="boardButton"></button>
+            <button data-x="1" data-y="2" class="boardButton no-right"></button>
 
-            <button data-id="6" class="boardButton no-left no-bottom"></button>
-            <button data-id="7" class="boardButton no-bottom"></button>
-            <button data-id="8" class="boardButton no-bottom no-right"></button>
+            <button data-x="2" data-y="0" class="boardButton no-left no-bottom"></button>
+            <button data-x="2" data-y="1" class="boardButton no-bottom"></button>
+            <button data-x="2" data-y="2"  class="boardButton no-bottom no-right"></button>
         </main>
         <aside>
+            <h1>RESULTS</h1>
+            <span class="playerTurn"></span>
             <div class="results">
+               
                 <div class="playerResults  ">
                     <div><img src="images/x.png"/></div>
-                    <span>Player 1</span>
-                    <div class="roundResult">
-                        <img src ="images/medal.png" />
-                        <img src ="images/medal.png" />
-                        <img src ="images/medal.png" />
+                    <span id="playerName1"></span>
+                    <div class="roundResult" id="roundResult1">
                     </div>
                 </div>
                 <div class="playerResults  ">
                     <div><img src="images/0.png"/></div>
-                    <span>Player 2</span>
+                    <span id="playerName2"></span>
                     <div class="roundResult">
-                        <div class="roundResult">
-                            <img src ="images/medal.png" />
-                            <img src ="images/medal.png" />
-                            <img src ="images/medal.png" />
+                        <div class="roundResult" id="roundResult2">
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="buttonsResults"></div>
+            <div class="buttonsResults">
+                <button id="restart">Restart Round</button>
+                <button id="newGame">New Game +</button>
+            </div>
         </aside>
     </div>
 
@@ -74,24 +74,37 @@
           <div class="contentPlayer" >            
             <div class="fields">
                 <label>Player's Name</label>           
-                <input type="text" />
+                <input id="player1" type="text" />
             </div>
             <div class="fields" id="contentPlayer1">
                 <label>Difficulty</label>           
-                 <select >
+                 <select id="difficulty" >
                     <option value="normal">Normal</option>
                     <option value="hard">Unbeatable</option>
                  </select>
             </div>
             <div class="fields" id="contentPlayer2">
                 <label>Player's Two Name</label>           
-                <input type="text" />
+                <input id="player2" type="text" />
             </div>
             <button class="save">Save</button>
           </div>              
         </div>         
     </div> 
      <!--end modals -->
+     <div id="roundWinnerModal" class="modal ">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close" id="close2">&times;</span>
+            <div class="winnerContent">
+                <span>Congratulations!</span>
+                <span class="winnerText"></span>
+                <img class="imgWinner" src="images/medal.png" />
+                <button class="playAgain">Play Again!</button>
+                <button class="Continue">Continue!</button>
+            </div>
+        </div>         
+    </div> 
 <script type="text/javascript" src="functions.js"></script>
 </body>   
 </html>

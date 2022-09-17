@@ -52,8 +52,12 @@ h1 {
     align-self: center;
 }
 
+.playerTurn {
+    font-size: 20px;
+}
+
 .game { 
-    display: grid;
+    display: none;
     grid-template-rows:  auto 1fr;
     grid-template-columns: 1fr 1fr;
     height: 100vh;
@@ -66,7 +70,7 @@ main {
 .start { 
    letter-spacing: 2px;
     background-color: #134e4a;
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -131,20 +135,23 @@ button:focus-visible{
     flex-direction: column;
     row-gap: 10px;
     justify-content: center;
-    align-items: center;
+    align-items: center; 
 }
 
 aside {    
     display: flex; 
     flex-direction: column;
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
 }
 
 .results {
     display: flex;
-    column-gap: 20px;
+    column-gap: 100px;
     justify-content: space-evenly;
-   
-    flex: 1;
+    align-content: space-between;
+    flex: 2;
 }
 
 .results span {
@@ -159,6 +166,32 @@ aside {
 .roundResult img {
     height: 50%;
 }
+
+.buttonsResults {
+    display: flex;
+    flex: 1; 
+    column-gap: 20px;
+}
+
+.winnerContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    row-gap: 20px;
+    font-size: 23px;
+}
+
+.winnerContent img {
+    width: 20%;
+}
+
+.playAgain {
+    display: none;
+}
+
+
 /* Modal style  */
 
 .modal {
@@ -210,5 +243,9 @@ aside {
     row-gap: 15px;
     padding: 20px;
   }
+
+
+
+
 
   
