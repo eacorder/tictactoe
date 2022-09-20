@@ -9,23 +9,22 @@ const gameBoard = (() => {
     let checkFlags = 1; 
     
     const startGame = (x , y , player) => { 
-        currentPlayer == 1 ? currentPlayer = 2 : currentPlayer = 1 ;  
+       // currentPlayer == 1 ? currentPlayer = 2 : currentPlayer = 1 ;   
         if(board[x][y] == 0){
             board[x][y] = player;
            
         }
         if (checkFlags >= 5 ){
           
-            _checkCol(y, player);
-            _checkRow(x,player)  ;
-            _checkDiagonal(x,y,player) ;
-            _checkAntidiagonal(x,y,player) ;
-            _checkDraw();
+            if(_checkCol(y, player)) return 1;
+            if(_checkRow(x,player))return  1;
+            if(_checkDiagonal(x,y,player))return 1;
+            if(_checkAntidiagonal(x,y,player))return 1;
+            if(_checkDraw())return 1;
 
         } 
      
-        checkFlags ++; 
-        return currentPlayer;
+        checkFlags ++;  
     }
 
     const _checkRow = (x , player) => {
@@ -91,18 +90,44 @@ const gameBoard = (() => {
         }
     }
 
+
+    const normalAiMovement = () => {
+        const array = new Array();
+        let cont = 0;  
+        if ( checkFlags < 9 ) {
+            for( i = 0; i < 3; i++){ 
+                for ( p = 0; p < 3; p++  ) {
+                    if (board[i][p] == 0 ) {                    
+                        const arr = new Array(2);
+                        arr[0] = i ;
+                        arr[1] = p; 
+                        array[cont] = arr;                   
+                        cont ++;
+                    }
+                }
+            } 
+            const random = Math.floor(Math.random() * array.length);
+            var aiMovement = array[random];
+            return aiMovement;
+        }
+        else return 0;
+       
+    }
+
     const cleanBoard = () => {
         f1 = [0 , 0 ,0];
         f2 = [0 , 0 ,0];
         f3 = [0 , 0 ,0];
-        board = [f1 , f2 ,f3];
-        currentPlayer = 1;
+        board = [f1 , f2 ,f3]; 
         checkFlags = 1;
     }
 
+    
+
     return { 
         startGame,
-        cleanBoard
+        cleanBoard,
+        normalAiMovement
     }
 
 })();
@@ -134,12 +159,12 @@ const displayController = (() => {
     const playAgainButton = document.querySelector(".playAgain"); 
     const ContinueButton = document.querySelector(".Continue"); 
     var audioWin= new Audio('sounds/win.wav');
-
+    const firstTurn = 0 ;
     let player1 ="";
     let player2 ="";
     let currentPlayer = 1;
-    let turn1 = 1;
-    let turn2 = 1;
+    let turn1 = 0;
+    let turn2 = 0;
     const _showModal = (modal) => {
         modal.style.display = "block"
     }
@@ -171,40 +196,102 @@ const displayController = (() => {
     }
 
     const _startGame = () => {   
-        player1 =  Player(inputPlayer1.value , 1, 1);
-        playerName1.innerHTML = player1.getName(); 
-        if (inputPlayer2.value == "") {
-            playerName2.innerHTML = "PC (" + difficulty.value + ")"
-            player2 =  Player(playerName2.innerHTML , 2, 0 ); 
-            
+        if ( inputPlayer1.value  == "" ) {
+            alert("Por favor ingrese los datos")
         } 
-        else {
-            player2 =  Player(inputPlayer2.value , 2, 1 ); 
-            playerName2.innerHTML = player2.getName();
-        }        
-        startLayout.style.display = "none"
-        gameLayout.style.display = "grid"
-        _closeModal(playersModal);
+        else
+            {
+                player1 =  Player(inputPlayer1.value , 1, 1);
+                playerName1.innerHTML = player1.getName(); 
+                if (inputPlayer2.value == "") {
+                    playerName2.innerHTML = "PC (" + difficulty.value + ")"
+                    player2 =  Player(playerName2.innerHTML , 2, 0 ); 
+                    
+                } 
+                else {
+                    
+                    player2 =  Player(inputPlayer2.value , 2, 1 ); 
+                    playerName2.innerHTML = player2.getName();
+                    console.log(player2.getType())
+        
+                }        
+                startLayout.style.display = "none"
+                gameLayout.style.display = "grid"
+                _closeModal(playersModal);
+            }
+      
        
     }
 
-    const _boardButtonAction = ( button) => {   
-        if (!button.classList.contains("selected")){ 
+    const _aiAction = () =>{
+
+        const movement = gameBoard.normalAiMovement();
+        if (movement != 0) {
+            const button = document.querySelector('[data-x="'+movement[0]+'"][data-y="'+movement[1]+'"]');
+            gameBoard.startGame(movement[0],movement[1],2)
             button.classList.add("selected");
-            button.innerHTML = currentPlayer == 1 ? player1.getSign() : player2.getSign(); 
-            currentPlayer = gameBoard.startGame(button.getAttribute('data-x'), button.getAttribute('data-y'), currentPlayer);
-        }          
+            button.innerHTML =  player2.getSign();                 
+            currentPlayer = 1;     
+        }         
+    }
+    
+    const _boardButtonAction = ( button) => {  
+        let win = 0;      
+        if (!button.classList.contains("selected")){             
+            if (currentPlayer == 1   ) {
+                win = gameBoard.startGame(button.getAttribute('data-x'), button.getAttribute('data-y'), 1);
+                button.classList.add("selected");
+                button.innerHTML =  player1.getSign(); 
+                currentPlayer = 2;   
+                if ( firstTurn == 0 ) {
+                    if ( win !=1  && player2.getType() == 0){
+                        _aiAction();
+                        firstTurn == 1;
+                    }
+                }            
+            }
+            else {
+                if (player2.getType() == 0 ) {
+                        _aiAction();     
+                } 
+                else {
+                    gameBoard.startGame(button.getAttribute('data-x'), button.getAttribute('data-y'), 2);
+                    button.classList.add("selected");
+                    button.innerHTML =  player2.getSign(); 
+                    currentPlayer = 1;             
+                }
+            }
+        }      
     }    
 
     const winingAction = (player) => {
         const imgMedal = document.createElement('img');
-        const imageWin = "images/medal.png"
-        const imageThropy = "images/trophy.png"
-        imgMedal.src = imageWin
-        
-         
+        const imageWin = "images/medal.png";
+        const imageThropy = "images/trophy.png";
+        imgMedal.src = imageWin;         
         _showModal(roundWinner);   
-       
+        
+        if (player == 1 &&  (turn1 < 3 || turn2 < 3) )
+        {
+            roundResult1.appendChild(imgMedal);
+            winnerText.innerHTML = "The winner of this round is " + player1.getName();
+            imgWinner.src = imageWin;
+            turn1++;
+            _continue();
+        }
+        else if (player == 0 &&  (turn1 < 3 || turn2 < 3)) {
+            winnerText.innerHTML = "It's a Draw"; 
+            imgWinner.src = "";
+            _continue();
+        }
+        else if ( player == 2  &&  (turn1 < 3 || turn2 < 3) )
+        {
+            winnerText.innerHTML = "The winner of this round is " + player2.getName();
+            roundResult2.appendChild(imgMedal);
+            imgWinner.src = imageWin;
+            turn2++;            
+        }
+
         if (turn1 == 3) {
             closeModal2.style.display = "none";
             winnerText.innerHTML =   player1.getName() + " Wins the game!" ;
@@ -222,33 +309,10 @@ const displayController = (() => {
             confetti.start()
             _playAgain();
             audioWin.play();
-        }
-        else {
             
-            if (player == 1) 
-            {
-                roundResult1.appendChild(imgMedal);
-                winnerText.innerHTML = "The winner of this round is " + player1.getName();
-                imgWinner.src = imageWin
-                turn1++;
-                _continue();
-            }
-            else if (player == 0) {
-                winnerText.innerHTML = "It's a Draw"  ; 
-                imgWinner.src = ""
-                _continue();
-            }
-            else
-            {
-                winnerText.innerHTML = "The winner of this round is " + player2.getName();
-                roundResult2.appendChild(imgMedal);
-                imgWinner.src = imageWin
-                turn2++;
-            }
-        }
-        cleanScreen();
-        
+        }           
     }
+
     const cleanBoxes = () => {
         boardButton.forEach((button) => { 
             button.innerHTML = ""
@@ -292,7 +356,6 @@ const displayController = (() => {
     return {
         winingAction
     }
-  
 
 })();
 
